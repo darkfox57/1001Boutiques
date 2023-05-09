@@ -1,9 +1,4 @@
-const typeDefs = `#graphql
-type User {
-  id: ID!
-  email: String
-  name: String
-}
+export const blogType = `#graphql
 
   type Contact {
     id: ID!
@@ -33,7 +28,6 @@ type User {
   }
 
   type Query {
-   getUsers: [User]
     post(id: ID): Post
     blog: [Post]
     contacts: [Contact]
@@ -43,4 +37,3 @@ type User {
     addBlog (title: String!, featured_img: String, slug: String!, content: String) : Post
   }
 `
-export default typeDefs

@@ -1,4 +1,10 @@
-const resolvers = {
+import { PrismaClient } from '@prisma/client'
+
+export type Context = {
+  prisma: PrismaClient
+}
+
+export const blogResolver = {
   Query: {
     blog: async (_parent: any, _args: any, context: { prisma: any }) => {
       return await context.prisma.post.findMany()
@@ -30,5 +36,3 @@ const resolvers = {
     },
   },
 }
-
-export default resolvers
