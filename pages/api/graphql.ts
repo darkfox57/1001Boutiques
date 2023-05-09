@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma'
-import resolvers from '@/lib/resolvers'
-import typeDefs from '@/lib/typeDefs'
+import { blogResolver } from '@/lib/resolvers/blogResolver'
+import { userResolver } from '@/lib/resolvers/userResolver'
+import { blogType } from '@/lib/types/blogType'
+import { userType } from '@/lib/types/userType'
 import { ApolloServer } from '@apollo/server'
 import { startServerAndCreateNextHandler } from '@as-integrations/next'
 import { PrismaClient } from '@prisma/client'
@@ -8,10 +10,9 @@ import { PrismaClient } from '@prisma/client'
 export type Context = {
   prisma: PrismaClient
 }
-
 const apolloServer = new ApolloServer<Context>({
-  typeDefs,
-  resolvers,
+  typeDefs: [userType, blogType],
+  resolvers: [userResolver, blogResolver],
 })
 
 export default startServerAndCreateNextHandler(apolloServer, {
