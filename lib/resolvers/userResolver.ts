@@ -25,5 +25,17 @@ export const userResolver = {
         },
       })
     },
+    updateUser: async (parent: any, args: any, context: { prisma: any }) => {
+      const updatedUser = await context.prisma.user.update({
+        where: {
+          id: args.id,
+        },
+        data: {
+          ...args,
+        },
+      })
+
+      return updatedUser
+    },
   },
 }

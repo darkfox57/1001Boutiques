@@ -36,7 +36,16 @@ export const userType = gql`
       password: String
       firstname: String
       lastname: String
-      role: String
+      session: String
+    ): User
+    updateUser(
+      id: ID!
+      name: String
+      email: String
+      password: String
+      firstname: String
+      lastname: String
+      session: String
     ): User
   }
 `

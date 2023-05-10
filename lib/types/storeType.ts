@@ -42,6 +42,36 @@ export const storeType = gql`
   }
 
   type Query {
-    stores: [Store]
+    getStores: [Store]
+    getStore(id: ID): Store
+  }
+  type Mutation {
+    addStore(
+      title: String!
+      subTitle: String
+      slug: String!
+      featured_img: String
+      phone: String
+      location: [String]
+      address: String
+      website: String
+      video: String
+      email: String
+      status: Status
+    ): Store!
+    updateStore(
+      id: ID!
+      title: String!
+      subTitle: String
+      slug: String!
+      featured_img: String
+      phone: String
+      location: [String]
+      address: String
+      website: String
+      video: String
+      email: String
+      status: Status
+    ): Store!
   }
 `

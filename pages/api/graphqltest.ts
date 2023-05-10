@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { blogResolver } from '@/lib/resolvers/blogResolver'
+import { storeResolver } from '@/lib/resolvers/storeResolver'
 import { userResolver } from '@/lib/resolvers/userResolver'
 import { blogType } from '@/lib/types/blogType'
 import { categoriesType } from '@/lib/types/categoryType'
@@ -29,7 +30,7 @@ const apolloServer = new ApolloServer<Context>({
     tagsType,
     mediaType,
   ],
-  resolvers: [userResolver, blogResolver],
+  resolvers: [userResolver, blogResolver, storeResolver],
 })
 
 export default startServerAndCreateNextHandler(apolloServer, {

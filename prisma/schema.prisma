@@ -103,7 +103,7 @@ model User {
   Roles     Rol[]
   createAt  DateTime   @default(now())
   updateAt  DateTime   @updatedAt
-  session   DateTime
+  session   DateTime   @default(now())
   deleted   Boolean    @default(false)
   deletedAt DateTime?
 }
