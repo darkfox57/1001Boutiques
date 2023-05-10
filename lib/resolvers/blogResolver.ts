@@ -16,15 +16,6 @@ export const blogResolver = {
         },
       })
     },
-    contacts: async (_parent: any, _args: any, context: { prisma: any }) => {
-      return await context.prisma.contact.findMany()
-    },
-    authors: async (_parent: any, _args: any, context: { prisma: any }) => {
-      return await context.prisma.author.findMany()
-    },
-    getUsers: async (parent: any, args: any, context: { prisma: any }) => {
-      return await context.prisma.user.findMany()
-    },
   },
   Mutation: {
     addBlog: async (_parent: any, args: any, context: { prisma: any }) => {
