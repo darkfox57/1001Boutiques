@@ -27,20 +27,180 @@ model Contact {
 }
 
 model Post {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  title        String
-  featured_img String
-  slug         String   @unique
-  content      String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  author       Author   @relation(fields: [authorId], references: [id])
-  authorId     String   @db.ObjectId
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  title           String    @unique
+  slug            String
+  content         String
+  featured_img    Image?    @relation(fields: [featuredImageId], references: [id])
+  featuredImageId String?   @db.ObjectId
+  author          User?     @relation(fields: [authorId], references: [id])
+  authorId        String    @db.ObjectId
+  categories      Category? @relation(fields: [categoryId], references: [id])
+  categoryId      String?   @db.ObjectId
+  tags            Tag?      @relation(fields: [tagId], references: [id])
+  tagId           String?   @db.ObjectId
+  comments        Comment?  @relation(fields: [commentsId], references: [id])
+  commentsId      String?   @db.ObjectId
+  createdAt       DateTime  @default(now())
+  status          Status
+  view            Int
+  updatedAt       DateTime  @updatedAt
+  deleted         Boolean   @default(false)
+  deletedAt       DateTime?
 }
 
-model Author {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  name  String
-  email String @unique
-  posts Post[]
+model Store {
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  title           String      @unique
+  subTitle        String
+  slug            String
+  featured_img    Image?      @relation(fields: [featuredImageId], references: [id])
+  featuredImageId String      @db.ObjectId
+  phone           String
+  location        String[]
+  address         String
+  website         String
+  video           String
+  email           String
+  tags            Tag?        @relation(fields: [tagId], references: [id])
+  tagId           String      @db.ObjectId
+  socials         Social[]
+  timetables      TimeTable[]
+  status          Status
+  views           Int
+  deleted         Boolean     @default(false)
+  deletedAt       DateTime?
+}
+
+enum Status {
+  published
+  draft
+  hidden
+}
+
+model Social {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  url     String
+  Store   Store?  @relation(fields: [storeId], references: [id])
+  storeId String? @db.ObjectId
+}
+
+model TimeTable {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  dayOfWeek String
+  openTime  String
+  closeTime String
+  Store     Store?  @relation(fields: [storeId], references: [id])
+  storeId   String? @db.ObjectId
+}
+
+model User {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String     @unique
+  password  String
+  firstname String
+  lastname  String
+  posts     Post[]
+  comments  Comment[]
+  Reactions Reaction[]
+  Roles     Rol[]
+  createAt  DateTime   @default(now())
+  updateAt  DateTime   @updatedAt
+  session   DateTime
+  deleted   Boolean    @default(false)
+  deletedAt DateTime?
+}
+
+model Rol {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String @default("user")
+  author   User?  @relation(fields: [authorId], references: [id])
+  authorId String @db.ObjectId
+}
+
+model Category {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String @unique
+  count       Int
+  contentType String
+  modelId     String @db.ObjectId
+  Post        Post[]
+
+  @@index([contentType, modelId])
+}
+
+model Tag {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  name          String  @unique
+  slug          String
+  taggeableType String
+  taggeableId   String  @db.ObjectId
+  count         Int
+  Post          Post[]
+  Store         Store[]
+
+  @@index([taggeableType, taggeableId])
+}
+
+model Image {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  url           String
+  imageableType String
+  imageableId   String    @db.ObjectId
+  Post          Post[]
+  Store         Store[]
+  createdAt     DateTime  @default(now())
+  updateAt      DateTime  @updatedAt
+  deleted       Boolean   @default(false)
+  deletedAt     DateTime?
+
+  @@index([imageableType, imageableId])
+}
+
+model GalleryImage {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  galleryType String
+  galleryId   String @db.ObjectId
+}
+
+model Comment {
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  content        String
+  comentableType CommentableType
+  comentableId   String          @db.ObjectId
+  author         User            @relation(fields: [authorId], references: [id])
+  authorId       String          @db.ObjectId
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  deleted        Boolean         @default(false)
+  deletedAt      DateTime?
+  Post           Post[]
+
+  @@index([comentableType, comentableId])
+}
+
+enum CommentableType {
+  POST
+  STORE
+  IMAGE
+}
+
+model Reaction {
+  id               String @id @default(auto()) @map("_id") @db.ObjectId
+  value            Valor
+  reactionableType String
+  reactionableId   String @db.ObjectId
+  valueLike        Int?   @default(1)
+  valueDislike     Int?   @default(2)
+  author           User   @relation(fields: [authorId], references: [id])
+  authorId         String @db.ObjectId
+
+  @@index([reactionableType, reactionableId])
+}
+
+enum Valor {
+  dislike
+  like
 }
