@@ -9,6 +9,13 @@ export const userResolver = {
     getUsers: async (parent: any, args: any, context: { prisma: any }) => {
       return await context.prisma.user.findMany()
     },
+    getUser: async (parent: any, args: any, context: { prisma: any }) => {
+      return await context.prisma.user.findUnique({
+        where: {
+          id: args.id,
+        },
+      })
+    },
   },
   Mutation: {
     addUser: async (_parent: any, args: any, context: { prisma: any }) => {
@@ -17,6 +24,18 @@ export const userResolver = {
           ...args,
         },
       })
+    },
+    updateUser: async (parent: any, args: any, context: { prisma: any }) => {
+      const updatedUser = await context.prisma.user.update({
+        where: {
+          id: args.id,
+        },
+        data: {
+          ...args,
+        },
+      })
+
+      return updatedUser
     },
   },
 }

@@ -1,39 +1,34 @@
-export const blogType = `#graphql
+import { gql } from '@apollo/client'
 
-  type Contact {
-    id: ID!
-    name: String
-    email: String
-    content: String
-    CreatedAt: String
-    UpdatedAt: String
-  }
-
-  type Author {
-    id: ID!
-    name: String
-    email: String
-    posts: [Post]
-  }
-
+export const blogType = gql`
   type Post {
     id: ID!
     title: String!
-    featured_img: String
-    slug: String!
+    slug: String
     content: String
+    featured_img: Image
+    author: User
+    categories: Category
+    tags: Tag
+    comments: Comment
     createdAt: String
+    status: Status
+    view: Int
     updatedAt: String
-    author: [Author]
+    deleted: Boolean
+    deletedAt: String
   }
 
+  enum Status {
+    PUBLISHED
+    DRAFT
+    HIDDEN
+  }
   type Query {
-    post(id: ID): Post
-    blog: [Post]
-    contacts: [Contact]
-    authors: [Author]
+    getPost(id: ID): Post
+    getPosts: [Post]
   }
   type Mutation {
-    addBlog (title: String!, featured_img: String, slug: String!, content: String) : Post
+    addBlog(title: String!, slug: String!, content: String): Post
   }
 `
