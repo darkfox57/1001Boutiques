@@ -12,8 +12,8 @@ datasource db {
 
 model Post {
   id              String    @id @default(auto()) @map("_id") @db.ObjectId
-  title           String
-  slug            String    @unique
+  title           String    @unique
+  slug            String
   content         String
   featured_img    Image?    @relation(fields: [featuredImageId], references: [id])
   featuredImageId String?   @db.ObjectId
@@ -26,13 +26,18 @@ model Post {
   comments        Comment?  @relation(fields: [commentsId], references: [id])
   commentsId      String?   @db.ObjectId
   createdAt       DateTime  @default(now())
+  status          Status
+  view            Int
   updatedAt       DateTime  @updatedAt
+  deleted         Boolean   @default(false)
+  deletedAt       DateTime?
 }
 
 model Store {
   id              String      @id @default(auto()) @map("_id") @db.ObjectId
-  title           String
+  title           String      @unique
   subTitle        String
+  slug            String
   featured_img    Image?      @relation(fields: [featuredImageId], references: [id])
   featuredImageId String      @db.ObjectId
   phone           String
@@ -45,6 +50,16 @@ model Store {
   tagId           String      @db.ObjectId
   socials         Social[]
   timetables      TimeTable[]
+  status          Status
+  views           Int
+  deleted         Boolean     @default(false)
+  deletedAt       DateTime?
+}
+
+enum Status {
+  published
+  draft
+  hidden
 }
 
 model Social {
@@ -68,10 +83,18 @@ model User {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   email     String     @unique
+  password  String
+  firstname String
+  lastname  String
   posts     Post[]
   comments  Comment[]
   Reactions Reaction[]
   Roles     Rol[]
+  createAt  DateTime   @default(now())
+  updateAt  DateTime   @updatedAt
+  session   DateTime
+  deleted   Boolean    @default(false)
+  deletedAt DateTime?
 }
 
 model Rol {
@@ -83,7 +106,7 @@ model Rol {
 
 model Category {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
+  name        String @unique
   count       Int
   contentType String
   modelId     String @db.ObjectId
@@ -94,6 +117,7 @@ model Category {
 
 model Tag {
   id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  name          String  @unique
   slug          String
   taggeableType String
   taggeableId   String  @db.ObjectId
@@ -105,12 +129,16 @@ model Tag {
 }
 
 model Image {
-  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
   url           String
   imageableType String
-  imageableId   String  @db.ObjectId
+  imageableId   String    @db.ObjectId
   Post          Post[]
   Store         Store[]
+  createdAt     DateTime  @default(now())
+  updateAt      DateTime  @updatedAt
+  deleted       Boolean   @default(false)
+  deletedAt     DateTime?
 
   @@index([imageableType, imageableId])
 }
@@ -130,6 +158,8 @@ model Comment {
   authorId       String          @db.ObjectId
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
+  deleted        Boolean         @default(false)
+  deletedAt      DateTime?
   Post           Post[]
 
   @@index([comentableType, comentableId])
@@ -137,6 +167,7 @@ model Comment {
 
 enum CommentableType {
   POST
+  STORE
   IMAGE
 }
 
