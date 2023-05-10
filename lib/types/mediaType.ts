@@ -4,15 +4,20 @@ export const mediaType = gql`
   type Image {
     id: ID!
     url: String!
-    post: [Post]
-    store: [Store]
+    imageableType: String
+    imageableId: String
+    posts: [Post]
+    stores: [Store]
     createdAt: String
-    updatedAt: String
+    updateAt: String
     deleted: Boolean
+    deletedAt: String
   }
 
   type GalleryImage {
-    id: ID!
+    id: String!
+    galleryType: String
+    galleryId: String
   }
 
   type Query {

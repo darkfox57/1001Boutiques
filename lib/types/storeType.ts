@@ -4,25 +4,41 @@ export const storeType = gql`
   type Store {
     id: ID!
     title: String!
-    subtitle: String
+    subTitle: String
     slug: String
+    featured_img: Image
     phone: String
+    location: [String]
     address: String
     website: String
     video: String
     email: String
-    featured_img: [Image]
-    location: [String]
-    tags: [Tag]
+    tags: Tag
     socials: [Social]
-    status: String
+    timetables: [TimeTable]
+    status: Status
     views: Int
+    deleted: Boolean!
+    deletedAt: String
   }
 
   type Social {
     id: ID!
     name: String!
     url: String!
+  }
+
+  type TimeTable {
+    id: ID!
+    dayOfWeek: String!
+    openingTime: String!
+    closingTime: String!
+  }
+
+  enum Status {
+    PUBLISHED
+    DRAFT
+    HIDDEN
   }
 
   type Query {

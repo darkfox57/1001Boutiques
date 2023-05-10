@@ -2,13 +2,22 @@ import { gql } from '@apollo/client'
 
 export const commentsType = gql`
   type Comment {
-    id: ID!
-    content: String
-    author: User
+    id: String!
+    content: String!
+    comentableType: CommentableType!
+    comentableId: String!
+    author: User!
     createdAt: String
     updatedAt: String
-    deleted: Boolean
-    # posts: [Post]
+    deleted: Boolean!
+    deletedAt: String
+    post: [Post]
+  }
+
+  enum CommentableType {
+    POST
+    STORE
+    IMAGE
   }
 
   type Query {

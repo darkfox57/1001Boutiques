@@ -2,11 +2,18 @@ import { gql } from '@apollo/client'
 
 export const reactionType = gql`
   type Reaction {
-    id: ID!
-    value: String
+    id: String!
+    value: Valor!
+    reactionableType: String
+    reactionableId: String
     valueLike: Int
     valueDislike: Int
-    author: [User]
+    author: User!
+  }
+
+  enum Valor {
+    LIKE
+    DISLIKE
   }
 
   type Query {

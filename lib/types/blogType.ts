@@ -4,21 +4,29 @@ export const blogType = gql`
   type Post {
     id: ID!
     title: String!
-    slug: String!
+    slug: String
     content: String
-    featured_img: [Image]
-    author: [User]
-    tags: [Tag]
-    categories: [Category]
-    comments: [Comment]
+    featured_img: Image
+    author: User
+    categories: Category
+    tags: Tag
+    comments: Comment
     createdAt: String
+    status: Status
+    view: Int
     updatedAt: String
-    deletedAr: Boolean
+    deleted: Boolean
+    deletedAt: String
   }
 
+  enum Status {
+    PUBLISHED
+    DRAFT
+    HIDDEN
+  }
   type Query {
-    post(id: ID): Post
-    blog: [Post]
+    getPost(id: ID): Post
+    getPosts: [Post]
   }
   type Mutation {
     addBlog(title: String!, slug: String!, content: String): Post

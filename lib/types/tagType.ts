@@ -3,11 +3,13 @@ import { gql } from '@apollo/client'
 export const tagsType = gql`
   type Tag {
     id: ID!
-    name: String
+    name: String!
     slug: String
-    count: String!
+    taggeableType: String
+    taggeableId: String
+    count: Int
     posts: [Post]
-    store: [Store]
+    stores: [Store]
   }
 
   type Query {

@@ -3,9 +3,10 @@ import { gql } from '@apollo/client'
 export const categoriesType = gql`
   type Category {
     id: ID!
-    name: String
-    count: String!
-    author: [User]
+    name: String!
+    count: Int
+    contentType: String
+    modelId: String
     posts: [Post]
   }
 

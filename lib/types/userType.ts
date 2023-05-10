@@ -3,17 +3,16 @@ import { gql } from '@apollo/client'
 export const userType = gql`
   type User {
     id: ID!
-    name: String
-    email: String
-    password: String
+    name: String!
+    email: String!
+    password: String!
     firstname: String
     lastname: String
-    post: [Post]
+    posts: [Post]
     comments: [Comment]
-    reactions: [Reaction]
-    role: [Rol]
-    createdAt: String
-    updatedAt: String
+    roles: [Rol]
+    createAt: String
+    updateAt: String
     session: String
     deleted: Boolean
     deletedAt: String
@@ -21,11 +20,14 @@ export const userType = gql`
 
   type Rol {
     id: ID!
-    name: String
+    name: String!
+    author: User
+    users: [User]
   }
 
   type Query {
     getUsers: [User]
+    getUser(id: ID): User
   }
   type Mutation {
     addUser(

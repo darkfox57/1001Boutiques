@@ -6,10 +6,10 @@ export type Context = {
 
 export const blogResolver = {
   Query: {
-    blog: async (_parent: any, _args: any, context: { prisma: any }) => {
+    getPosts: async (_parent: any, _args: any, context: { prisma: any }) => {
       return await context.prisma.post.findMany()
     },
-    post: async (_parent: any, { slug }: any, context: { prisma: any }) => {
+    getPost: async (_parent: any, { slug }: any, context: { prisma: any }) => {
       return await context.prisma.post.findUnique({
         where: {
           slug: slug,
